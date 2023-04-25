@@ -34,6 +34,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    //twilio ka phone_number column ko pl auto kyi // ngr toh ka phone column moh modify py
+    public function routeNotificationForTwilio()
+    {
+        return $this->phone;
+    }
+
+
     public function driver()
     {
         return $this->hasOne(Driver::class);
