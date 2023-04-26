@@ -25,7 +25,7 @@ class TripController extends Controller
     }
     public function show(Request $request, Trip $trip)
     {
-        
+
         if($request->user()->id === $trip->user->id) {
             return $trip;
         }
@@ -44,8 +44,13 @@ class TripController extends Controller
             'driver_location' => 'required'
         ]);
 
+        //driver can only accept
+        if(!$request->user()->driver) {
+            return response()->json(['message' => 'Only Driver can accept trip'], 403);
+        }
+
         $trip->update([
-            'driver_id' => $request->user()->id,
+            'driver_id' => $request->user()->driver->id,
             'driver_location' => $request->driver_location
         ]);
 
@@ -56,6 +61,11 @@ class TripController extends Controller
     }
     public function start(Request $request, Trip $trip)
     {
+
+        
+        if(!$request->user()->driver) {
+            return response()->json(['message' => 'Only Driver can start trip'], 403);
+        }
        
         $trip->update([
             'is_started' => true
@@ -68,6 +78,11 @@ class TripController extends Controller
     }
     public function end(Request $request, Trip $trip)
     {
+       
+        if(!$request->user()->driver) {
+            return response()->json(['message' => 'Only Driver can end trip'], 403);
+        }
+
         $trip->update([
             'is_completed' => true
         ]);
@@ -82,6 +97,11 @@ class TripController extends Controller
         $request->validate([
             'driver_location' => 'required'
         ]);
+
+        //driver can only accept
+        if(!$request->user()->driver) {
+            return response()->json(['message' => 'Only Driver can update driver location'], 403);
+        }
 
         $trip->update([
             'driver_location' => $request->driver_location

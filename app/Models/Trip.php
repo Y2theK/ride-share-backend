@@ -18,6 +18,8 @@ class Trip extends Model
         'origin' => 'array',
         'destination' => 'array',
         'driver_location' => 'array',
+        'is_started' => 'boolean',
+        'is_completed' => 'boolean'
     ];
 
     public function user()
