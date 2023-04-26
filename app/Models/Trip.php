@@ -13,6 +13,13 @@ class Trip extends Model
 
     protected $guarded = [];
 
+    //cast to array type before inserting into database
+    protected $casts = [
+        'origin' => 'array',
+        'destination' => 'array',
+        'driver_location' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

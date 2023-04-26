@@ -18,18 +18,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    //user routes
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    //driver routes
     Route::get('/driver', [DriverController::class,'show']);
     Route::post('/driver', [DriverController::class,'update']);
+
+    //trip routes
     Route::post('/trip', [TripController::class,'store']);
-    Route::post('/trip/{trip}', [TripController::class,'show']);
+    Route::get('/trip/{trip}', [TripController::class,'show']);
     Route::post('/trip/{trip}/accept', [TripController::class,'accept']);
     Route::post('/trip/{trip}/start', [TripController::class,'start']);
     Route::post('/trip/{trip}/end', [TripController::class,'end']);
     Route::post('/trip/{trip}/location', [TripController::class,'location']);
 });
-
+//login routes
 Route::post('/login', [LoginController::class,'submit']);
 Route::post('/login/verify', [LoginController::class,'verify']);

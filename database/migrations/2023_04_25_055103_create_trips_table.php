@@ -16,13 +16,13 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Driver::class)->nullable();
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->boolean('is_started')->default(false);
             $table->boolean('is_completed')->default(false);
             $table->json('origin')->nullable();  //store latitude and loungtitude as json
             $table->json('destination')->nullable();
             $table->string('destination_name')->nullable();
-            $table->json('driver_location');
+            $table->json('driver_location')->nullable();
             $table->timestamps();
         });
     }

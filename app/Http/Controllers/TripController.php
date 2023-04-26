@@ -14,7 +14,7 @@ class TripController extends Controller
             'destination' => 'required',
             'destination_name' => 'required'
         ]);
-
+        
         $trip = $request->user()->trips()->create($request->only([
             'origin',
             'destination',
@@ -25,6 +25,7 @@ class TripController extends Controller
     }
     public function show(Request $request, Trip $trip)
     {
+        
         if($request->user()->id === $trip->user->id) {
             return $trip;
         }
