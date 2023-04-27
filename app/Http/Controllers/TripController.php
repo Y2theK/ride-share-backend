@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TripAccepted;
+use App\Events\TripCompleted;
+use App\Events\TripLocationUpdated;
+use App\Events\TripStarted;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 
@@ -57,15 +61,17 @@ class TripController extends Controller
 
         $trip->load('driver.user');  //load both associated driver and user
 
+        TripAccepted::dispatch($trip, $request->user());
+
         return $trip;
     }
     public function start(Request $request, Trip $trip)
     {
 
         
-        if(!$request->user()->driver) {
-            return response()->json(['message' => 'Only Driver can start trip'], 403);
-        }
+        // if(!$request->user()->driver) {
+        //     return response()->json(['message' => 'Only Driver can start trip'], 403);
+        // }
        
         $trip->update([
             'is_started' => true
@@ -74,14 +80,16 @@ class TripController extends Controller
 
         $trip->load('driver.user');  //load both associated driver and user
 
+        TripStarted::dispatch($trip, $request->user());
+
         return $trip;
     }
     public function end(Request $request, Trip $trip)
     {
        
-        if(!$request->user()->driver) {
-            return response()->json(['message' => 'Only Driver can end trip'], 403);
-        }
+        // if(!$request->user()->driver) {
+        //     return response()->json(['message' => 'Only Driver can end trip'], 403);
+        // }
 
         $trip->update([
             'is_completed' => true
@@ -89,6 +97,8 @@ class TripController extends Controller
 
 
         $trip->load('driver.user');  //load both associated driver and user
+
+        TripCompleted::dispatch($trip, $request->user());
 
         return $trip;
     }
@@ -98,10 +108,10 @@ class TripController extends Controller
             'driver_location' => 'required'
         ]);
 
-        //driver can only accept
-        if(!$request->user()->driver) {
-            return response()->json(['message' => 'Only Driver can update driver location'], 403);
-        }
+        
+        // if(!$request->user()->driver) {
+        //     return response()->json(['message' => 'Only Driver can update driver location'], 403);
+        // }
 
         $trip->update([
             'driver_location' => $request->driver_location
@@ -109,6 +119,8 @@ class TripController extends Controller
 
 
         $trip->load('driver.user');  //load both associated driver and user
+
+        TripLocationUpdated::dispatch($trip, $request->user());
 
         return $trip;
     }
