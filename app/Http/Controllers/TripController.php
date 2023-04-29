@@ -64,7 +64,7 @@ class TripController extends Controller
 
         $trip->load('driver.user');  //load both associated driver and user
 
-        TripAccepted::dispatch($trip, $request->user());
+        TripAccepted::dispatch($trip, $trip->user);
 
         return $trip;
     }
@@ -83,7 +83,7 @@ class TripController extends Controller
 
         $trip->load('driver.user');  //load both associated driver and user
 
-        TripStarted::dispatch($trip, $request->user());
+        TripStarted::dispatch($trip, $trip->user);
 
         return $trip;
     }
@@ -101,7 +101,7 @@ class TripController extends Controller
 
         $trip->load('driver.user');  //load both associated driver and user
 
-        TripCompleted::dispatch($trip, $request->user());
+        TripCompleted::dispatch($trip, $trip->user);
 
         return $trip;
     }
